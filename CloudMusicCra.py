@@ -109,7 +109,7 @@ for tmp in soup.find_all('a', href='/song?id=489998494'):
 
 
 # logging.debug(sys.argv[0])
-ArtistList = GetArtists(1001)
+ArtistList = GetArtists
 count = 0
 for artist in ArtistList:
     ArtistsSongs = GetSongs(artist)
