@@ -45,6 +45,7 @@ def GetLyric(song_id):
             logging.debug(str(song_id) + '暂无歌词收录')
     else:
         logging.debug(str(song_id) + '纯音乐无歌词')
+    return None
     # except Exception as e:
     #     logging.debug(str(song_id) + '这首歌没有歌词')
     #     logging.exception(e)
@@ -98,26 +99,32 @@ def GetArtists(type_id):
     return artist_list
 
 
-test = requests.get(
-    'http://music.163.com/discover/toplist', headers=GetHeader())
-soup = BeautifulSoup(test.content, 'html.parser')
-# logging.debug(soup)
-# for link in soup.find_all('span', class_='txt'):
-#     # logging.debug(link)
-for tmp in soup.find_all('a', href='/song?id=489998494'):
-    logging.debug(tmp)
+def CountLove(mode, lrc):
+    if mode == 1:
+        pat = re.compile(r'爱')
+    elif mode == 2:
+        pat = re.compile(r'love', re.I)
+
+    return len(pat.findall(lrc))
 
 
-# logging.debug(sys.argv[0])
-ArtistList = GetArtists
-count = 0
-for artist in ArtistList:
-    ArtistsSongs = GetSongs(artist)
-    for song in ArtistsSongs:
-        GetLyric(song)
-    count += 1
-    logging.info('----------------------已爬取' + str(count) +
-                 '/' + str(len(ArtistList)) + '位歌手-----------------')
+logging.debug(sys.argv[0])
+love = 0
+for x in range(1001, 1002):
+    ArtistList = GetArtists(x)
+    count = 0
+    for artist in ArtistList:
+        ArtistsSongs = GetSongs(artist)
+        for song in ArtistsSongs:
+            lrc = GetLyric(song)
+            if lrc:
+                love += CountLove(x % 1000, lrc)
+        count += 1
+        logging.info('----------------------已爬取' + str(count) +
+                     '/' + str(len(ArtistList)) + '位歌手-----------------')
+        break
+
+print('一共出现了' + str(love) + '次“爱”')
 
 
 # GetLyric(28866346)
