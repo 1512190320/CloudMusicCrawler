@@ -122,7 +122,6 @@ for x in range(1001, 1002):
         count += 1
         logging.info('----------------------已爬取' + str(count) +
                      '/' + str(len(ArtistList)) + '位歌手-----------------')
-        break
 
 print('一共出现了' + str(love) + '次“爱”')
 
