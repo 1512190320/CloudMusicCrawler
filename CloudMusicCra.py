@@ -110,12 +110,16 @@ def CountLove(mode, lrc):
 
 logging.debug(sys.argv[0])
 love = 0
+songs = 0
+artists = 0
 for x in range(1001, 1002):
     ArtistList = GetArtists(x)
     count = 0
     for artist in ArtistList:
         ArtistsSongs = GetSongs(artist)
+        artists += 1
         for song in ArtistsSongs:
+            songs += 1
             lrc = GetLyric(song)
             if lrc:
                 love += CountLove(x % 1000, lrc)
@@ -123,7 +127,8 @@ for x in range(1001, 1002):
         logging.info('----------------------已爬取' + str(count) +
                      '/' + str(len(ArtistList)) + '位歌手-----------------')
 
-print('一共出现了' + str(love) + '次“爱”')
+print(str(artists) + '位歌手的' + str(songs) +
+      '首歌中，' + '一共出现了' + str(love) + '次“爱”')
 
 
 # GetLyric(28866346)
